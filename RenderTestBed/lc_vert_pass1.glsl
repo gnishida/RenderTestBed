@@ -2,10 +2,10 @@
 
 layout(location = 0)in vec3 vertex;
 layout(location = 1)in vec3 normal;
-layout(location = 2)in vec3 color;
+layout(location = 2)in vec4 color;
 layout(location = 3)in vec3 uv;
 
-out vec3 outColor;
+out vec4 outColor;
 out vec3 outUV;
 out vec3 origVertex;// L
 
@@ -33,7 +33,7 @@ uniform vec4 terrain_size;
 uniform sampler2D terrain_tex;
 
 // model
-uniform vec3 justOneColor;
+uniform vec4 justOneColor;
 uniform mat4 modelTransf;
 
 void main(){
@@ -42,13 +42,6 @@ void main(){
 	outUV=uv;
 	origVertex=vertex;
 
-	// 1. TRANSFORM MODEL
-	if(((mode&0x0FF)==0x05)||((mode&0xFF)==0x06)){
-		outColor=justOneColor;
-		origVertex=origVertex.xzy;//change model Y<->Z
-		origVertex=(modelTransf*vec4(origVertex,1.0)).xyz;//note 1.0
-
-	}
 	// 2. ADAPT TO TERRAIN
 	if(((mode&0xFF)==0x03)||((mode&0x0100)==0x0100)){// terrain or adapt to terrain
 		vec2 terrainTexCoord=vec2(
@@ -60,17 +53,6 @@ void main(){
 		origVertex.z+=height;
 		//if(height<15.0f)//water height
 		//	origVertex.z=-100.0f;
-	}
-
-	// WATER
-	if((mode&0xFF)==0x04){
-		vec3 u = normalize( vec3(mvMatrix * vec4(origVertex,1.0)) );
-		vec3 n = normalize( normalMatrix * normal );
-		vec3 r = reflect( u, n );
-		float m = 2.0 * sqrt( r.x*r.x + r.y*r.y + (r.z+1.0)*(r.z+1.0) );
-		m*=2.0;// NACHO
-		outUV.s = r.x/m + 0.5;
-		outUV.t = r.y/m + 0.5;
 	}
 
 	// LIGHTING

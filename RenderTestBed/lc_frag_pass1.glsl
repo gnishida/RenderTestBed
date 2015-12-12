@@ -1,7 +1,7 @@
 #version 330
 #extension GL_EXT_gpu_shader4 : enable
 
-in vec3 outColor;
+in vec4 outColor;
 in vec3 outUV;
 in vec3 origVertex;// L
 
@@ -20,7 +20,7 @@ uniform mat3 normalMatrix;
 //uniform mat4 mvpMatrix;
 
 void main(){
-	def_diffuse = outColor;
+	def_diffuse = outColor.xyz;
 	//if(false){//mv space
 	//	def_normal = normalMatrix*varyingNormal;
 	//	def_originPos = (mvMatrix*vec4(origVertex, 1.0)).xyz;
