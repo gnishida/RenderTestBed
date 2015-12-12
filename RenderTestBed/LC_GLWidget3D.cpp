@@ -15,7 +15,7 @@ namespace LC {
 	LCGLWidget3D::LCGLWidget3D(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent) {
 		urbanMain = (LCUrbanMain*)parent;
 
-		myCam = new Camera3D();
+		//myCam = new Camera3D();
 		spaceRadius = 5000.0;
 		farPlaneToSpaceRadiusFactor = 5.0f;//N 5.0f
 
@@ -33,7 +33,7 @@ namespace LC {
 	}
 
 	LCGLWidget3D::~LCGLWidget3D() {
-		delete myCam;
+		//delete myCam;
 	}
 
 	QSize LCGLWidget3D::minimumSizeHint() const {
@@ -45,7 +45,8 @@ namespace LC {
 	}
 
 	void LCGLWidget3D::resetMyCam() {
-		myCam->resetCamera();
+		//myCam->resetCamera();
+		//cameraresetCamera();
 		updateGL();
 	}
 
@@ -55,11 +56,12 @@ namespace LC {
 		mouseMoved = false;
 		//printf(">>1mousePressEvent\n");
 		QVector3D mouse3DPos;
-		mouseTo3D(event->x(), event->y(), &mouse3DPos);
+		//mouseTo3D(event->x(), event->y(), &mouse3DPos);
 		//printf("Pos2D %d %d --> Pos3D %f %f %f\n", event->x(), event->y(), mouse3DPos.x(), mouse3DPos.y(), mouse3DPos.z());
-		mouse3DPos.setZ(0);
+		//mouse3DPos.setZ(0);
 		//printf(">>2mousePressEvent\n");
 		lastPos = event->pos();
+		camera.mousePress(event->x(), event->y());
 		//printf("<<+mousePressEvent\n");
 	}
 
@@ -81,7 +83,7 @@ namespace LC {
 		///////////////////////////////////////////////////////
 		// 
 		QVector3D mouse3DPos;
-		mouseTo3D(event->x(), event->y(), &mouse3DPos);
+		/*mouseTo3D(event->x(), event->y(), &mouse3DPos);
 		float dx = (float)(event->x() - lastPos.x());
 		float dy = (float)(event->y() - lastPos.y());
 		lastPos = event->pos();
@@ -90,7 +92,9 @@ namespace LC {
 			printf("----------------\n----------\n");
 			return;
 		}
-		myCam->motion(dx, dy, keyLPressed);//if M pressed--> light Otherwise-->Move camera
+		*/
+		camera.rotate(event->x(), event->y());
+		//myCam->motion(dx, dy, keyLPressed);//if M pressed--> light Otherwise-->Move camera
 		//if(keyLPressed==true)//update shadow map
 		//	shadow.makeShadowMap(this);
 		updateGL();
@@ -269,14 +273,15 @@ namespace LC {
 
 		printf("Resize w %d h %d\n", width, height);
 
-		myCam->resizeCam(width / 2.0f, height / 2.0f);
+		//myCam->resizeCam(width / 2.0f, height / 2.0f);
+		camera.updatePMatrix(width, height);
 
 		glViewport(0, 0, (GLint)width, (GLint)height);
 
 		//////////////////////////
 		// PROJECTION MATRIX
 
-		float fov = myCam->fovy;
+		/*float fov = myCam->fovy;
 
 		float aspect = (float)width / (float)height;
 		float zfar = 4.0f*FAR_DIST;//4* to allow see the sky
@@ -292,7 +297,7 @@ namespace LC {
 
 		};
 		pMatrix = QMatrix4x4(m);
-
+		*/
 		// resize buffers
 		vboRenderManager.resizeFragTex(this->width(), this->height());
 		updateGL();
@@ -305,7 +310,7 @@ namespace LC {
 		// PASS 1: Render to texture
 		glUseProgram(vboRenderManager.program_pass1);
 		{
-			myCam->camLook();//lookAt
+			/*myCam->camLook();//lookAt
 
 			normalMatrix = myCam->mvMatrix.normalMatrix();
 
@@ -324,11 +329,12 @@ namespace LC {
 			for (int i = 0; i < 9; i++) {
 				normMatrixArray[i] = normalMatrix.data()[i];
 			}
+			*/
 
 			//glUniformMatrix4fv(mvpMatrixLoc,  1, false, mvpMatrixArray);
-			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass1, "mvpMatrix"), 1, false, mvpMatrixArray);
-			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass1, "mvMatrix"), 1, false, mvMatrixArray);
-			glUniformMatrix3fv(glGetUniformLocation(vboRenderManager.program_pass1, "normalMatrix"), 1, false, normMatrixArray);
+			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass1, "mvpMatrix"), 1, false, &camera.mvpMatrix[0][0]);//mvpMatrixArray);
+			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass1, "mvMatrix"), 1, false, &camera.mvMatrix[0][0]);//mvMatrixArray);
+			//glUniformMatrix3fv(glGetUniformLocation(vboRenderManager.program_pass1, "normalMatrix"), 1, false, normMatrixArray);
 		}
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, vboRenderManager.fragDataFB);
@@ -424,8 +430,8 @@ namespace LC {
 					pMatrixArray[i] = pMatrix.data()[i];
 					std::cout << pMatrixArray[i] << std::endl;
 				}
-				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass2, "mvpMatrix"), 1, false, mvpMatrixArray);
-				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass2, "pMatrix"), 1, false, pMatrixArray);
+				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass2, "mvpMatrix"), 1, false, &camera.mvpMatrix[0][0]);//mvpMatrixArray);
+				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass2, "pMatrix"), 1, false, &camera.pMatrix[0][0]);//pMatrixArray);
 			}
 
 
@@ -546,82 +552,7 @@ namespace LC {
 		case Qt::Key_Alt:
 			altPressed = true;
 			break;
-		case Qt::Key_R:
-			printf("Reseting camera pose\n");
-			myCam->resetCamera();
-			break;
-		case Qt::Key_W:
-			myCam->moveKey(0); updateGL();
-			break;
-		case Qt::Key_S:
-			myCam->moveKey(1); updateGL();
-			break;
-		case Qt::Key_D:
-			myCam->moveKey(2); updateGL();
-			break;
-		case Qt::Key_A:
-			myCam->moveKey(3); updateGL();
-			break;
-		case Qt::Key_Q:
-			myCam->moveKey(4); updateGL();
-			break;
 		case Qt::Key_Z:
-			break;
-		case Qt::Key_6:
-			printf("Save camera 1\n");
-			myCam->printCamera();
-			myCam->saveCameraPose(1);
-			break;
-		case Qt::Key_7:
-			printf("Save camera 2\n");
-			myCam->saveCameraPose(2);
-			break;
-		case Qt::Key_8:
-			printf("Save camera 3\n");
-			myCam->saveCameraPose(3);
-			break;
-		case Qt::Key_9:
-			printf("Save camera 4\n");
-			myCam->saveCameraPose(4);
-			break;
-		case Qt::Key_0:
-			printf("Save camera 5\n");
-			myCam->saveCameraPose(5);
-			break;
-		case Qt::Key_1:
-			printf("Load Camera1\n");
-			myCam->loadCameraPose(1);
-			break;
-		case Qt::Key_2:
-			printf("Load Camera2\n");
-			myCam->loadCameraPose(2);
-			break;
-		case Qt::Key_3:
-			printf("Load Camera3\n");
-			myCam->loadCameraPose(3);
-			break;
-		case Qt::Key_4:
-			printf("Load Camera4\n");
-			myCam->loadCameraPose(4);
-			break;
-		case Qt::Key_5:
-			printf("Load Camera5\n");
-			myCam->loadCameraPose(5);
-			break;
-		case Qt::Key_M:
-			printf("M pressed\n");
-			keyMPressed = true;
-			vboRenderManager.editionMode = true;
-			updateGL();
-			setMouseTracking(true);
-			break;
-		case Qt::Key_L:
-			keyLPressed = true;
-			printf("L pressed\n");
-			break;
-		case Qt::Key_K:
-			//printf("K pressed\n");
-			//shadow.displayDepthTex=!shadow.displayDepthTex;
 			break;
 		default:
 			;
@@ -656,7 +587,7 @@ namespace LC {
 	}
 
 	//from nehe.gamedev.net/data/articles/article.asp?article=13
-	bool LCGLWidget3D::mouseTo3D(int x, int y, QVector3D *result) {
+	/*bool LCGLWidget3D::mouseTo3D(int x, int y, QVector3D *result) {
 		//printf("mouseTo3D\n");
 		GLint viewport[4];
 		GLfloat winX, winY, winZ=0;
@@ -693,6 +624,6 @@ namespace LC {
 		result->setZ(posZ);
 		//printf("mouseTo3D 5\n");
 		return true;
-	}//
+	}//*/
 
 } // namespace LC

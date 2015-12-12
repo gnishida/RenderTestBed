@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_LC_UrbanMain.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_LC_UrbanMain.cpp" />
-    <ClCompile Include="LC_camera_3d.cpp" />
     <ClCompile Include="LC_GLWidget3D.cpp" />
     <ClCompile Include="LC_GLWidget3D_Shadows.cpp" />
     <ClCompile Include="LC_main.cpp" />
@@ -16,10 +15,10 @@
     <ClCompile Include="VBOShader.cpp" />
     <ClCompile Include="VBOSkyBox.cpp" />
     <ClCompile Include="VBOUtil.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_LC_UrbanMain.h" />
-    <ClInclude Include="LC_camera_3d.h" />
     <ClInclude Include="LC_GLWidget3D.h" />
     <ClInclude Include="LC_GLWidget3D_Shadows.h" />
     <ClInclude Include="misctools\bounding_box.h" />
@@ -32,6 +31,7 @@
     <ClInclude Include="VBOSkyBox.h" />
     <ClInclude Include="VBOTerrain.h" />
     <ClInclude Include="VBOUtil.h" />
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="LC_UrbanMain.h" />
@@ -40,6 +40,16 @@
   <ItemGroup>
     <Filter Include="Shaders">
       <UniqueIdentifier>{1ebd2b1a-6876-48de-b294-284b88bfb669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+      <ParseFiles>true</ParseFiles>
     </Filter>
   </ItemGroup>
   <ItemGroup>

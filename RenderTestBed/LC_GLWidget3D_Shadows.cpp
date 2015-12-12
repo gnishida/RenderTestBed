@@ -114,7 +114,8 @@ namespace LC {
 		//QVector3D light_position=clientMain->mGLWidget_3D->myCam->light_dir.toVector3D();
 		light_mvMatrix.setToIdentity();
 		//light_mvMatrix.lookAt(QVector3D(0,0,0),(-light_position).normalized(),QVector3D(0,0,1.0f));
-		light_mvMatrix.lookAt(QVector3D(0,0,0),(-glWidget3D->getCamera()->light_dir.toVector3D()).normalized(),QVector3D(0,0,1.0f));
+		QVector3D light_dir(-0.5,-0.5,-0.5);
+		light_mvMatrix.lookAt(QVector3D(0,0,0),(-light_dir).normalized(),QVector3D(0,0,1.0f));
 		
 
 		// note that only the z-component is need and thus
@@ -202,9 +203,9 @@ namespace LC {
 
 	void GLWidgetSimpleShadow::updateShadowMatrix(LCGLWidget3D* glWidget3D){
 
-		QVector3D light_position=-glWidget3D->getCamera()->light_dir.toVector3D();
+		QVector3D light_position(-0.5,-0.5,-0.5);//=-glWidget3D->getCamera()->light_dir.toVector3D();
 		//////////////////////////////////////////////////////
-		float fov=glWidget3D->getCamera()->fovy; 
+		float fov=45;//glWidget3D->getCamera()->fovy; 
 		float aspect=(float)shadowWidth/(float)shadowHeight;
 
 		float zfar=3800.0f;//3300.0f;// 
@@ -305,7 +306,7 @@ namespace LC {
 		programId=_programId;
 
 		// PROJECTION MATRIX
-		float fov=glWidget3D->getCamera()->fovy; 
+		float fov=45;//glWidget3D->getCamera()->fovy; 
 		float aspect=(float)shadowWidth/(float)shadowHeight;
 		//float zfar=FAR_DIST;//!!!!! clientMain->mGLWidget_3D->farPlaneToSpaceRadiusFactor*clientMain->mGLWidget_3D->spaceRadius;
 		//float znear=5.0f;
@@ -335,7 +336,7 @@ namespace LC {
 		printf("LOC lights %d %d %d\n",light_mvpMatrixLoc,light_biasMatrixLoc,light_positionLoc);
 		
 		// UPDATE MATRIX
-		QVector3D light_position=glWidget3D->getCamera()->light_dir.toVector3D();
+		QVector3D light_position(-0.5,-0.5,-0.5);//glWidget3D->getCamera()->light_dir.toVector3D();
 		light_mvMatrix.setToIdentity();
 		////// light_mvMatrix.lookAt(-light_position,(QVector3D(0,0,0)-light_position).normalized(),QVector3D(0.0f,0,1.0f));
 		
@@ -408,7 +409,7 @@ namespace LC {
 		
 
 		// update camera fustrum (for overview)
-		updateSplitDist(glWidget3D->getCamera()->f, 1.0f/*FAR_DIST/6*/, FAR_DIST);//FAR_DIST/6 to display
+		//updateSplitDist(glWidget3D->getCamera()->f, 1.0f/*FAR_DIST/6*/, FAR_DIST);//FAR_DIST/6 to display
 		
 		// generate shadow map using drawScene(1)
 		glBindFramebuffer(GL_FRAMEBUFFER,FBO);

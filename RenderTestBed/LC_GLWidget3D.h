@@ -3,7 +3,8 @@
 #include "glew.h"
 #include <QGLWidget>
 #include "VBORenderManager.h"
-#include "LC_camera_3d.h"
+//#include "LC_camera_3d.h"
+#include "Camera.h"
 
 #include "misctools/misctools.h"
 //#include "LC_GLWidget3D_Shadows.h"
@@ -19,7 +20,8 @@ class LCGLWidget3D : public QGLWidget {
 
 protected:
 	LCUrbanMain* urbanMain;
-	Camera3D *myCam;
+	//Camera3D *myCam;
+	Camera camera;
 	//ucore::TextureManager* textureManager;
 	bool shiftPressed;
 	bool controlPressed;
@@ -45,7 +47,7 @@ public:
 	LCGLWidget3D(QWidget *parent = 0);
 	~LCGLWidget3D();	
 
-	Camera3D* getCamera() { return myCam; }
+	//Camera3D* getCamera() { return myCam; }
 
 	void updateMe();
 	QSize minimumSizeHint() const;
@@ -58,7 +60,7 @@ public:
 	void setLightPosition(double altitude, double azimuth);
 	void setLightPosition(GLfloat x, GLfloat y, GLfloat z);
 
-	bool mouseTo3D(int x, int y, QVector3D* result);
+	//bool mouseTo3D(int x, int y, QVector3D* result);
 	bool mouseMoved;
 
 	void drawScene(int drawMode);
