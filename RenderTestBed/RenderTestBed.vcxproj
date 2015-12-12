@@ -27,9 +27,8 @@
     <ClInclude Include="misctools\global.h" />
     <ClInclude Include="misctools\misctools.h" />
     <ClInclude Include="misctools\polygon_3D.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="VBORenderManager.h" />
-    <ClInclude Include="VBOShader.h" />
-    <ClInclude Include="VBOTerrain.h" />
     <ClInclude Include="VBOUtil.h" />
     <ClInclude Include="Vertex.h" />
     <CustomBuild Include="LC_UrbanMain.h">
@@ -68,8 +67,8 @@
     <ClCompile Include="misctools\global.cpp" />
     <ClCompile Include="misctools\misctools.cpp" />
     <ClCompile Include="misctools\polygon_3D.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="VBORenderManager.cpp" />
-    <ClCompile Include="VBOShader.cpp" />
     <ClCompile Include="VBOUtil.cpp" />
   </ItemGroup>
   <ItemGroup>

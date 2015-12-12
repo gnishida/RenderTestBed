@@ -1,10 +1,11 @@
 #pragma once
 
 #include "glew.h"
-#include "VBOShader.h"
+#include "Shader.h"
 #include "VBOUtil.h"
 #include "qmap.h"
 #include "Vertex.h"
+#include <QHash>
 
 #ifndef Q_MOC_RUN
 #include <boost/geometry/geometry.hpp>
@@ -69,6 +70,8 @@ namespace LC {
 		GLuint program_pass1;
 		GLuint program_pass2;
 		GLuint program_pass3;
+
+		Shader shader;
 
 		int currentIndexGeo;
 

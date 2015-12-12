@@ -11,7 +11,7 @@ namespace LC {
 	}
 
 	VBORenderManager::~VBORenderManager() {
-		Shader::cleanShaders();
+		//Shader::cleanShaders();
 		//delete
 		glDeleteVertexArrays(1,&secondPassVBO);
 		glDeleteVertexArrays(1,&secondPassVAO);
@@ -26,17 +26,17 @@ namespace LC {
 		fragDataNamesP1.push_back("def_diffuse");
 		fragDataNamesP1.push_back("def_normal");
 		fragDataNamesP1.push_back("def_originPos");
-		program_pass1=Shader::initShader(QString("lc_vert_pass1.glsl"),QString("lc_frag_pass1.glsl"),fragDataNamesP1);
+		program_pass1=shader.createProgram("lc_vert_pass1.glsl", "lc_frag_pass1.glsl" ,fragDataNamesP1);
 		// PASS 2
 		printf("PASS 2\n");
 		std::vector<QString> fragDataNamesP2;
 		fragDataNamesP2.push_back("def_AO");
-		program_pass2=Shader::initShader(QString("lc_vert_pass2.glsl"),QString("lc_frag_pass2.glsl"),fragDataNamesP2);
+		program_pass2=shader.createProgram("lc_vert_pass2.glsl", "lc_frag_pass2.glsl" , fragDataNamesP2);
 		// PASS 3
 		printf("PASS 3\n");
 		std::vector<QString> fragDataNamesP3;//default
 		fragDataNamesP3.push_back("outputF");
-		program_pass3 = Shader::initShader(QString("lc_vert_pass3.glsl"), QString("lc_frag_pass3.glsl"), fragDataNamesP3);
+		program_pass3 = shader.createProgram("lc_vert_pass3.glsl", "lc_frag_pass3.glsl", fragDataNamesP3);
 
 		glUseProgram(program_pass1);
 

@@ -11,11 +11,9 @@
     <ClCompile Include="misctools\misctools.cpp" />
     <ClCompile Include="misctools\polygon_3D.cpp" />
     <ClCompile Include="VBORenderManager.cpp" />
-    <ClCompile Include="VBOShader.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="VBOUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="VBOUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_LC_UrbanMain.h" />
@@ -26,13 +24,10 @@
     <ClInclude Include="misctools\misctools.h" />
     <ClInclude Include="misctools\polygon_3D.h" />
     <ClInclude Include="VBORenderManager.h" />
-    <ClInclude Include="VBOShader.h" />
-    <ClInclude Include="VBOTerrain.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="VBOUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="VBOUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="LC_UrbanMain.h" />
