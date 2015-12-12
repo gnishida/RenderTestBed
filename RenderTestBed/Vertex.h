@@ -9,7 +9,7 @@ struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
 	glm::vec4 color;
-	glm::vec3 texCoord;
+	glm::vec2 texCoord;
 	float drawEdge;	// 0 -- exclude / 1 -- draw edge
 
 	Vertex() {}
@@ -31,7 +31,7 @@ struct Vertex {
 		position = pos;
 		normal = n;
 		color = c;
-		texCoord = glm::vec3(tex, 0);
+		texCoord = tex;
 		this->drawEdge = drawEdge;
 	}
 };

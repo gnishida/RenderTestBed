@@ -2,7 +2,7 @@
 #extension GL_EXT_gpu_shader4 : enable
 
 in vec4 outColor;
-in vec3 outUV;
+in vec2 outUV;
 in vec3 origVertex;// L
 
 in vec3 varyingNormal;
