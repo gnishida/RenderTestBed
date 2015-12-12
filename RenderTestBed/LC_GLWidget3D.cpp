@@ -468,14 +468,6 @@ namespace LC {
 
 
 
-		// NORMAL
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(false);
-		glDepthFunc(GL_ALWAYS);
-		//printf("RENDER NORMAL\n");
-		glUniform1i(glGetUniformLocation(vboRenderManager.program_pass1, "shadowState"), 0);//SHADOW: Disable
-		vboRenderManager.renderStaticGeometry(QString("sky"));
-
 		//if(shadowEnabled)
 		//	glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 1);//SHADOW: Render Normal with Shadows
 		glEnable(GL_DEPTH_TEST);
