@@ -4,7 +4,6 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_LC_UrbanMain.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_LC_UrbanMain.cpp" />
     <ClCompile Include="LC_GLWidget3D.cpp" />
-    <ClCompile Include="LC_GLWidget3D_Shadows.cpp" />
     <ClCompile Include="LC_main.cpp" />
     <ClCompile Include="LC_UrbanMain.cpp" />
     <ClCompile Include="misctools\bounding_box.cpp" />
@@ -20,7 +19,6 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_LC_UrbanMain.h" />
     <ClInclude Include="LC_GLWidget3D.h" />
-    <ClInclude Include="LC_GLWidget3D_Shadows.h" />
     <ClInclude Include="misctools\bounding_box.h" />
     <ClInclude Include="misctools\common.h" />
     <ClInclude Include="misctools\global.h" />
