@@ -98,7 +98,7 @@ namespace LC {
 		// second pass
 		GLuint secondPassVBO;
 		GLuint secondPassVAO;
-		void renderSecondPass();
+		//void renderSecondPass();
 		// ssao
 		float uRadius;
 		float uPower;
