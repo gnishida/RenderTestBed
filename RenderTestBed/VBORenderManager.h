@@ -4,7 +4,7 @@
 #include "VBOShader.h"
 #include "VBOUtil.h"
 #include "qmap.h"
-
+#include "Vertex.h"
 
 #ifndef Q_MOC_RUN
 #include <boost/geometry/geometry.hpp>
@@ -112,7 +112,7 @@ namespace LC {
 
 		//static
 		bool addStaticGeometry(QString geoName,std::vector<Vertex>& vert,QString textureName,GLenum geometryType,int shaderMode);
-		bool addStaticGeometry2(QString geoName,std::vector<QVector3D>& pos,float zShift,bool inverseLoop,QString textureName,GLenum geometryType,int shaderMode,QVector3D texScale,QVector3D color);
+		bool addStaticGeometry2(QString geoName,std::vector<glm::vec3>& pos,float zShift,bool inverseLoop,QString textureName,GLenum geometryType,int shaderMode,glm::vec2 texScale,glm::vec4 color);
 		//bool addStaticConvexPoly(QString geoName,std::vector<QVector3D>& pos,float zShift,bool inverseLoop,QString textureName,int shaderMode,QVector3D texScale,bool tesselate=true,QVector3D* color=0);
 		bool removeStaticGeometry(QString geoName);
 		void renderStaticGeometry(QString geoName);

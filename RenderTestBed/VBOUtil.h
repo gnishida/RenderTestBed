@@ -7,6 +7,7 @@
 
 namespace LC {
 
+	/*
 	/////////////////////////
 	// Contaisn the Vertex structure to do the rendering
 	struct Vertex{
@@ -86,7 +87,7 @@ namespace LC {
 			printf("pos %f %f %f col %f %f %f normal %f %f %f tex %f %f %f\n",info[0],info[1],info[2],info[3],info[4],info[5],info[6],info[7],info[8],info[9],info[10],info[11]);
 		}
 	};
-
+	*/
 
 	class VBOUtil{
 

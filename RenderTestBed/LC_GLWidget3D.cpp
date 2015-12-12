@@ -160,93 +160,93 @@ namespace LC {
 		*/
 		std::vector<Vertex> terrVert;
 		float r = 0, g = 92.0f / 255.0f, b = 9.0f / 255.0f;
-		terrVert.push_back(Vertex(QVector3D(-1000, -1000, 0.0f), QVector3D(r, g, b), QVector3D(0, 0, 1), QVector3D(0, 0, 0)));
-		terrVert.push_back(Vertex(QVector3D(1000, -1000, 0.0f), QVector3D(r, g, b), QVector3D(0, 0, 1), QVector3D(1, 0, 0)));
-		terrVert.push_back(Vertex(QVector3D(1000, 1000, 0.0f), QVector3D(r, g, b), QVector3D(0, 0, 1), QVector3D(1, 1, 0)));
-		terrVert.push_back(Vertex(QVector3D(-1000, 1000, 0.0f), QVector3D(r, g, b), QVector3D(0, 0, 1), QVector3D(0, 1, 0)));
+		terrVert.push_back(Vertex(glm::vec3(-1000, -1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(0, 0)));
+		terrVert.push_back(Vertex(glm::vec3(1000, -1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(1, 0)));
+		terrVert.push_back(Vertex(glm::vec3(1000, 1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(1, 1)));
+		terrVert.push_back(Vertex(glm::vec3(-1000, 1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(0, 1)));
 		vboRenderManager.addStaticGeometry("simple_geo", terrVert, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 		//////////////////////////////////////////
 		std::vector<Vertex> sideVertT;
 		int nextN;
-		QVector3D normal;
-		QVector3D colorW(1, 1, 1);
+		glm::vec3 normal;
+		glm::vec4 colorW(1, 1, 1, 1);
 		float height = 50;
 
 		{// BOX GROUND
 			float distance = 15.0f;
-			std::vector<QVector3D> contB;
-			contB.push_back(QVector3D(100 + distance, -100, 0));
-			contB.push_back(QVector3D(300 + distance, -100, 0));
-			contB.push_back(QVector3D(300 + distance, 100, 0));
-			contB.push_back(QVector3D(100 + distance, 100, 0));
+			std::vector<glm::vec3> contB;
+			contB.push_back(glm::vec3(100 + distance, -100, 0));
+			contB.push_back(glm::vec3(300 + distance, -100, 0));
+			contB.push_back(glm::vec3(300 + distance, 100, 0));
+			contB.push_back(glm::vec3(100 + distance, 100, 0));
 
 			for (int curN = 0; curN < contB.size(); curN++) {
 				nextN = (curN + 1) % contB.size();
-				QVector3D dir = contB[nextN] - contB[curN];
+				glm::vec3 dir = contB[nextN] - contB[curN];
 				float leng = dir.length();
 				dir /= leng;
-				normal = QVector3D::crossProduct(dir, QVector3D(0, 0, 1)).normalized();
-				printf("nom %d: %f %f %f\n", curN, normal.x(), normal.y(), normal.z());
-				sideVertT.push_back(Vertex(QVector3D(contB[curN].x(), contB[curN].y(), 0.0f), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[nextN].x(), contB[nextN].y(), 0.0f), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[nextN].x(), contB[nextN].y(), 0.0f + height), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[curN].x(), contB[curN].y(), 0.0f + height), colorW, normal, QVector3D()));
+				normal = glm::normalize(glm::cross(dir, glm::vec3(0, 0, 1)));
+				printf("nom %d: %f %f %f\n", curN, normal.x, normal.y, normal.z);
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f + height), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f + height), normal, colorW, glm::vec2()));
 
 			}
 			//data/textures/LC/hatch/h2.png
 			vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 			//roof
-			vboRenderManager.addStaticGeometry2("simple_geo1", contB, height, false, "", GL_QUADS, 1 | LC::mode_Lighting, QVector3D(1, 1, 1), colorW);
+			vboRenderManager.addStaticGeometry2("simple_geo1", contB, height, false, "", GL_QUADS, 1 | LC::mode_Lighting, glm::vec2(1, 1), colorW);
 		}
 		{//SIDE BOX GROUND
-			std::vector<QVector3D> contB;
-			contB.push_back(QVector3D(-100, -100, 0));
-			contB.push_back(QVector3D(100, -100, 0));
-			contB.push_back(QVector3D(100, 100, 0));
-			contB.push_back(QVector3D(-100, 100, 0));
+			std::vector<glm::vec3> contB;
+			contB.push_back(glm::vec3(-100, -100, 0));
+			contB.push_back(glm::vec3(100, -100, 0));
+			contB.push_back(glm::vec3(100, 100, 0));
+			contB.push_back(glm::vec3(-100, 100, 0));
 
 			for (int curN = 0; curN < contB.size(); curN++) {
 				nextN = (curN + 1) % contB.size();
-				QVector3D dir = contB[nextN] - contB[curN];
+				glm::vec3 dir = contB[nextN] - contB[curN];
 				float leng = dir.length();
 				dir /= leng;
-				normal = QVector3D::crossProduct(dir, QVector3D(0, 0, 1)).normalized();
-				printf("nom %d: %f %f %f\n", curN, normal.x(), normal.y(), normal.z());
-				sideVertT.push_back(Vertex(QVector3D(contB[curN].x(), contB[curN].y(), 0.0f), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[nextN].x(), contB[nextN].y(), 0.0f), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[nextN].x(), contB[nextN].y(), 0.0f + height), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[curN].x(), contB[curN].y(), 0.0f + height), colorW, normal, QVector3D()));
+				normal = glm::normalize(glm::cross(dir, glm::vec3(0, 0, 1)));
+				printf("nom %d: %f %f %f\n", curN, normal.x, normal.y, normal.z);
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f + height), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f + height), normal, colorW, glm::vec2()));
 
 			}
 			//data/textures/LC/hatch/h2.png
 			vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 			//roof
-			vboRenderManager.addStaticGeometry2("simple_geo1", contB, height, false, "", GL_QUADS, 1 | LC::mode_Lighting, QVector3D(1, 1, 1), colorW);
+			vboRenderManager.addStaticGeometry2("simple_geo1", contB, height, false, "", GL_QUADS, 1 | LC::mode_Lighting, glm::vec2(1, 1), colorW);
 		}
 		{ // TOP BOX
-			std::vector<QVector3D> contB;
-			contB.push_back(QVector3D(-50, -50, 0));
-			contB.push_back(QVector3D(50, -50, 0));
-			contB.push_back(QVector3D(50, 50, 0));
-			contB.push_back(QVector3D(-50, 50, 0));
+			std::vector<glm::vec3> contB;
+			contB.push_back(glm::vec3(-50, -50, 0));
+			contB.push_back(glm::vec3(50, -50, 0));
+			contB.push_back(glm::vec3(50, 50, 0));
+			contB.push_back(glm::vec3(-50, 50, 0));
 
 			for (int curN = 0; curN < contB.size(); curN++) {
 				nextN = (curN + 1) % contB.size();
-				QVector3D dir = contB[nextN] - contB[curN];
+				glm::vec3 dir = contB[nextN] - contB[curN];
 				float leng = dir.length();
 				dir /= leng;
-				normal = QVector3D::crossProduct(dir, QVector3D(0, 0, 1)).normalized();
-				printf("nom %d: %f %f %f\n", curN, normal.x(), normal.y(), normal.z());
-				sideVertT.push_back(Vertex(QVector3D(contB[curN].x(), contB[curN].y(), 50.0f), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[nextN].x(), contB[nextN].y(), 50.0f), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[nextN].x(), contB[nextN].y(), 50.0f + height), colorW, normal, QVector3D()));
-				sideVertT.push_back(Vertex(QVector3D(contB[curN].x(), contB[curN].y(), 50.0f + height), colorW, normal, QVector3D()));
+				normal = glm::normalize(glm::cross(dir, glm::vec3(0, 0, 1)));
+				printf("nom %d: %f %f %f\n", curN, normal.x, normal.y, normal.z);
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 50.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 50.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 50.0f + height), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 50.0f + height), normal, colorW, glm::vec2()));
 
 			}
 			//data/textures/LC/hatch/h2.png
 			vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 			//roof
-			vboRenderManager.addStaticGeometry2("simple_geo1", contB, 50+height, false, "", GL_QUADS, 1 | LC::mode_Lighting, QVector3D(1, 1, 1), colorW);
+			vboRenderManager.addStaticGeometry2("simple_geo1", contB, 50+height, false, "", GL_QUADS, 1 | LC::mode_Lighting, glm::vec2(1, 1), colorW);
 		}
 		/////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////

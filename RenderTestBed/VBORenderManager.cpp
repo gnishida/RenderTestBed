@@ -46,10 +46,10 @@ namespace LC {
 		// INIT SECOND PASS
 		// Quad
 		std::vector<Vertex> vert(4);
-		vert[0]=Vertex(-1,-1,0,0,0,0,0,0,0,0,0,0);
-		vert[1]=Vertex(1,-1,0,0,0,0,0,0,0,1,0,0);
-		vert[2]=Vertex(1,1,0,0,0,0,0,0,0,1,1,0);
-		vert[3]=Vertex(-1,1,0,0,0,0,0,0,0,0,1,0);
+		vert[0]=Vertex(glm::vec3(-1,-1,0),glm::vec3(0,0,0),glm::vec4(0,0,0,1), glm::vec2(0,0));
+		vert[1]=Vertex(glm::vec3(1,-1,0),glm::vec3(0,0,0),glm::vec4(0,0,0,1), glm::vec2(1,0));
+		vert[2]=Vertex(glm::vec3(1,1,0),glm::vec3(0,0,0),glm::vec4(0,0,0,1), glm::vec2(1,1));
+		vert[3]=Vertex(glm::vec3(-1,1,0),glm::vec3(0,0,0),glm::vec4(0,0,0,1), glm::vec2(0,1));
 
 		glGenVertexArrays(1,&secondPassVAO);
 		glBindVertexArray(secondPassVAO);
@@ -59,6 +59,15 @@ namespace LC {
 	
 		// Configure the attributes in the VAO.
 		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
+		/*
+		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),0);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(3*sizeof(float)));
@@ -66,6 +75,7 @@ namespace LC {
 		glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(6*sizeof(float)));
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(9*sizeof(float)));
+		*/
 
 		glBindVertexArray(0);
 		// fragm
@@ -313,14 +323,26 @@ namespace LC {
 	
 		// Configure the attributes in the VAO.
 		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
+
+		/*
+		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),0);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(3*sizeof(float)));
+
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(6*sizeof(float)));
+		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(9*sizeof(float)));
-
+		*/
 
 		// Bind back to the default state.
 		glBindVertexArray(0); 
@@ -443,7 +465,7 @@ namespace LC {
 
 	using namespace boost::polygon::operators;
 
-	bool VBORenderManager::addStaticGeometry2(QString geoName,std::vector<QVector3D>& pos,float zShift,bool inverseLoop,QString textureName,GLenum geometryType,int shaderMode,QVector3D texScale,QVector3D color){
+	bool VBORenderManager::addStaticGeometry2(QString geoName,std::vector<glm::vec3>& pos,float zShift,bool inverseLoop,QString textureName,GLenum geometryType,int shaderMode,glm::vec2 texScale,glm::vec4 color){
 		if(pos.size()<3){
 			return false;
 		}
@@ -456,13 +478,13 @@ namespace LC {
 		float maxX=-FLT_MAX,maxY=-FLT_MAX;
 
 		for(int pN=0;pN<pos.size();pN++){
-			vP[pN]=boost::polygon::construct<pointP>(pos[pN].x(),pos[pN].y());
-			minX=std::min<float>(minX,pos[pN].x());
-			minY=std::min<float>(minY,pos[pN].y());
-			maxX=std::max<float>(maxX,pos[pN].x());
-			maxY=std::max<float>(maxY,pos[pN].y());
+			vP[pN]=boost::polygon::construct<pointP>(pos[pN].x,pos[pN].y);
+			minX=std::min<float>(minX,pos[pN].x);
+			minY=std::min<float>(minY,pos[pN].y);
+			maxX=std::max<float>(maxX,pos[pN].x);
+			maxY=std::max<float>(maxY,pos[pN].y);
 		}
-		if(pos.back().x()!=pos.front().x()&&pos.back().y()!=pos.front().y()){
+		if(pos.back().x!=pos.front().x&&pos.back().y!=pos.front().y){
 			vP.push_back(vP[0]);
 		}
 
@@ -476,19 +498,19 @@ namespace LC {
 		for(int pN=0;pN<allP.size();pN++){
 			//glColor3ub(qrand()%255,qrand()%255,qrand()%255);
 			boost::polygon::polygon_with_holes_data<double>::iterator_type itPoly=allP[pN].begin();
-			std::vector<QVector3D> points;
-			std::vector<QVector3D> texP;
+			std::vector<glm::vec3> points;
+			std::vector<glm::vec2> texP;
 			while(itPoly!=allP[pN].end()){
 				pointP cP=*itPoly;
 				if(inverseLoop==false)
-					points.push_back(QVector3D(cP.x(),cP.y(),pos[0].z()+zShift));
+					points.push_back(glm::vec3(cP.x(),cP.y(),pos[0].z+zShift));
 				else
-					points.insert(points.begin(),QVector3D(cP.x(),cP.y(),pos[0].z()+zShift));
+					points.insert(points.begin(),glm::vec3(cP.x(),cP.y(),pos[0].z+zShift));
 
 				//if(texZeroToOne==true){
 					//texP.push_back(QVector3D((cP.x()-minX)/(maxX-minX),(cP.y()-minY)/(maxY-minY),0.0f));
 				//}else{
-					texP.push_back(QVector3D((cP.x()-minX)*texScale.x(),(cP.y()-minY)*texScale.y(),0.0f));
+					texP.push_back(glm::vec2((cP.x()-minX)*texScale.x,(cP.y()-minY)*texScale.y));
 				//}
 				itPoly++;
 			}
@@ -506,10 +528,10 @@ namespace LC {
 				//addTexTriang(texInd,std::vector<QVector3D>(&points[3],&points[6]),std::vector<QVector3D>(&texP[3],&texP[6]),col,norm);
 				//addTexTriang(texInd,std::vector<QVector3D>(&points[4],&points[6]),std::vector<QVector3D>(&texP[4],&texP[6]),col,norm);
 			}*/
-			vert.push_back(Vertex(points[0],color,QVector3D(0,0,1),texP[0]));//texScale is a hack to define a color when it is not texture
-			vert.push_back(Vertex(points[1],color,QVector3D(0,0,1),texP[1]));
-			vert.push_back(Vertex(points[2],color,QVector3D(0,0,1),texP[2]));
-			vert.push_back(Vertex(points[3],color,QVector3D(0,0,1),texP[3]));
+			vert.push_back(Vertex(points[0],glm::vec3(0,0,1),color,texP[0]));//texScale is a hack to define a color when it is not texture
+			vert.push_back(Vertex(points[1],glm::vec3(0,0,1),color,texP[1]));
+			vert.push_back(Vertex(points[2],glm::vec3(0,0,1),color,texP[2]));
+			vert.push_back(Vertex(points[3],glm::vec3(0,0,1),color,texP[3]));
 		}
 
 		return addStaticGeometry(geoName,vert,textureName,geometryType,shaderMode);

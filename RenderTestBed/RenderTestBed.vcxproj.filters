@@ -28,6 +28,7 @@
     <ClInclude Include="VBOTerrain.h" />
     <ClInclude Include="VBOUtil.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="LC_UrbanMain.h" />

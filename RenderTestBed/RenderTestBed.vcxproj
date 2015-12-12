@@ -31,6 +31,7 @@
     <ClInclude Include="VBOShader.h" />
     <ClInclude Include="VBOTerrain.h" />
     <ClInclude Include="VBOUtil.h" />
+    <ClInclude Include="Vertex.h" />
     <CustomBuild Include="LC_UrbanMain.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing LC_UrbanMain.h...</Message>
