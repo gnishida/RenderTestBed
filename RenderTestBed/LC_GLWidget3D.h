@@ -34,9 +34,9 @@ protected:
 	float rotationSensitivity;
 	float zoomSensitivity;
 
-	QMatrix4x4 mvpMatrix;
+	/*QMatrix4x4 mvpMatrix;
 	QMatrix4x4 pMatrix;
-	QMatrix3x3 normalMatrix;
+	QMatrix3x3 normalMatrix;*/
 
 	
 	//GLWidgetSimpleShadow shadow;

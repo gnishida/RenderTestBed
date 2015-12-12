@@ -310,28 +310,6 @@ namespace LC {
 		// PASS 1: Render to texture
 		glUseProgram(vboRenderManager.program_pass1);
 		{
-			/*myCam->camLook();//lookAt
-
-			normalMatrix = myCam->mvMatrix.normalMatrix();
-
-			mvpMatrix = pMatrix*myCam->mvMatrix;
-
-			float mvpMatrixArray[16];
-			float mvMatrixArray[16];
-
-			std::cout << "mvpMatrix   ,   mvMatrix" << std::endl;
-			for (int i = 0; i < 16; i++) {
-				mvpMatrixArray[i] = mvpMatrix.data()[i];
-				mvMatrixArray[i] = myCam->mvMatrix.data()[i];
-				std::cout << mvpMatrixArray[i] << " , " << mvMatrixArray[i] << std::endl;
-			}
-			float normMatrixArray[9];
-			for (int i = 0; i < 9; i++) {
-				normMatrixArray[i] = normalMatrix.data()[i];
-			}
-			*/
-
-			//glUniformMatrix4fv(mvpMatrixLoc,  1, false, mvpMatrixArray);
 			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass1, "mvpMatrix"), 1, false, &camera.mvpMatrix[0][0]);//mvpMatrixArray);
 			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass1, "mvMatrix"), 1, false, &camera.mvMatrix[0][0]);//mvMatrixArray);
 			//glUniformMatrix3fv(glGetUniformLocation(vboRenderManager.program_pass1, "normalMatrix"), 1, false, normMatrixArray);
@@ -416,20 +394,6 @@ namespace LC {
 			glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragNoiseTex);
 
 			{
-				QMatrix4x4 invPMatrix = pMatrix.inverted();
-				QMatrix4x4 invMVPMatrix = mvpMatrix.inverted();
-
-				float mvpMatrixArray[16];
-				float pMatrixArray[16];
-				//float invPMatrixArray[16];
-				//float invMVPMatrixArray[16];
-
-				std::cout << "pMatrix" << std::endl;
-				for (int i = 0; i < 16; i++) {
-					mvpMatrixArray[i] = mvpMatrix.data()[i];
-					pMatrixArray[i] = pMatrix.data()[i];
-					std::cout << pMatrixArray[i] << std::endl;
-				}
 				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass2, "mvpMatrix"), 1, false, &camera.mvpMatrix[0][0]);//mvpMatrixArray);
 				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass2, "pMatrix"), 1, false, &camera.pMatrix[0][0]);//pMatrixArray);
 			}
@@ -536,7 +500,6 @@ namespace LC {
 		controlPressed = false;
 		altPressed = false;
 		keyMPressed = false;
-		vboRenderManager.editionMode = false;
 		keyLPressed = false;
 
 		switch (e->key()) {
@@ -576,11 +539,6 @@ namespace LC {
 			break;
 		case Qt::Key_Alt:
 			altPressed = false;
-		case Qt::Key_M:
-			keyMPressed = false;
-			setMouseTracking(false);
-			vboRenderManager.editionMode = false;
-			updateGL();//remove circle
 		default:
 			;
 		}

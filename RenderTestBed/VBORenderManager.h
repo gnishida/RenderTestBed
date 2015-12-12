@@ -5,12 +5,6 @@
 #include "VBOUtil.h"
 #include "qmap.h"
 
-#include "VBOSkyBox.h"
-/*#include "VBOWater.h"
-#include "VBOTerrain.h"
-#include "VBOGUI.h"
-
-#include "VBOModel_StreetElements.h"*/
 
 #ifndef Q_MOC_RUN
 #include <boost/geometry/geometry.hpp>
@@ -24,9 +18,6 @@
 
 namespace LC {
 
-	//class VBOTerrain;
-	class VBOSkyBox;
-	//class vboWater;
 
 	const int mode_AdaptTerrain=0x0100;
 	const int mode_Lighting=0x0200;
@@ -85,18 +76,7 @@ namespace LC {
 		~VBORenderManager();
 
 		void init();
-
-		// layers & terrain
-		bool editionMode;
-		QVector3D mousePos3D;
-		//VBOTerrain vboTerrain;
-		void updateLayer(QVector3D mouse3D,float change);
-		QVector3D minPos;
-		QVector3D maxPos;
-		
-		// sky
-		VBOSkyBox vboSkyBox;
-		
+				
 		/// water
 		//VBOWater vboWater;
 		//void renderWater();

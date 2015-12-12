@@ -4,10 +4,6 @@ namespace LC {
 
 
 	VBORenderManager::VBORenderManager(){
-		editionMode=false;
-		minPos=QVector3D (-1000.0f,-1000.0f,0);
-		maxPos=QVector3D (1000.0f,1000.0f,0);
-
 		//ssao
 		uKernelSize = 16;
 		uRadius = 17.0f;
@@ -44,7 +40,6 @@ namespace LC {
 
 		glUseProgram(program_pass1);
 
-		vboSkyBox.init(*this);
 
 		nameToTexId[""]=0;
 		//////////////////////////////////////////////
