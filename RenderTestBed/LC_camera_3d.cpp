@@ -55,8 +55,8 @@ namespace LC {
 	}//
 
 	void Camera3D::resetCamera(void){
-		cam_pos=QVector3D(750.0, 500.0f, 900);
-		cam_view=QVector3D(-0.5f, -0.5f, -0.7f);
+		cam_pos=QVector3D(750.0, 500.0f, -900);
+		cam_view=QVector3D(-0.5f, -0.5f, 0.7f);
 
 		light_dir=QVector4D(-0.5f,0.4f,-0.77f,0.0f);
 		light_dir=QVector4D(-0.38f,0.86f,-0.34f,0.00f);

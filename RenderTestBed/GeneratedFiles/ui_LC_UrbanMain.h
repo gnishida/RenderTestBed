@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'LC_UrbanMain.ui'
 **
-** Created: Fri Dec 11 19:24:32 2015
-**      by: Qt User Interface Compiler version 4.8.2
+** Created: Fri Dec 11 19:46:03 2015
+**      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

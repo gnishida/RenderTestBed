@@ -110,7 +110,7 @@ namespace LC {
 			printf("Ready for OpenGL 4.2\n");
 		else {
 			printf("OpenGL 4.2 not supported\n");
-			exit(1);
+			//exit(1);
 		}
 		const GLubyte* text =
 			glGetString(GL_VERSION);
