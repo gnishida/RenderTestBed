@@ -2,7 +2,8 @@
 
 #include "glew.h"
 #include <QGLWidget>
-#include "VBORenderManager.h"
+//#include "VBORenderManager.h"
+#include "RenderManager.h"
 //#include "LC_camera_3d.h"
 #include "Camera.h"
 
@@ -42,7 +43,8 @@ protected:
 	//GLWidgetSimpleShadow shadow;
 	//bool shadowEnabled;
 public:
-	VBORenderManager vboRenderManager;
+	//VBORenderManager vboRenderManager;
+	RenderManager vboRenderManager;
 
 	LCGLWidget3D(QWidget *parent = 0);
 	~LCGLWidget3D();	

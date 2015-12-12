@@ -146,7 +146,7 @@ namespace LC {
 		glCullFace(GL_BACK);
 
 		////////////////////////////////
-		vboRenderManager.init();
+		vboRenderManager.init("", "", "", false);
 		vboRenderManager.resizeFragTex(this->width(), this->height());
 
 		//// INIT SIMPLE GEOMETRY
@@ -163,8 +163,11 @@ namespace LC {
 		terrVert.push_back(Vertex(glm::vec3(-1000, -1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(0, 0)));
 		terrVert.push_back(Vertex(glm::vec3(1000, -1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(1, 0)));
 		terrVert.push_back(Vertex(glm::vec3(1000, 1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(1, 1)));
+		terrVert.push_back(Vertex(glm::vec3(-1000, -1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(0, 0)));
+		terrVert.push_back(Vertex(glm::vec3(1000, 1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(1, 1)));
 		terrVert.push_back(Vertex(glm::vec3(-1000, 1000, 0.0f), glm::vec3(0, 0, 1), glm::vec4(r, g, b, 1), glm::vec2(0, 1)));
-		vboRenderManager.addStaticGeometry("simple_geo", terrVert, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+		//vboRenderManager.addStaticGeometry("simple_geo", terrVert, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+		vboRenderManager.addObject("simple_geo", "", terrVert);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 		//////////////////////////////////////////
 		std::vector<Vertex> sideVertT;
 		int nextN;
@@ -190,13 +193,23 @@ namespace LC {
 				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f + height), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f + height), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f + height), normal, colorW, glm::vec2()));
 
 			}
 			//data/textures/LC/hatch/h2.png
-			vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			//vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			vboRenderManager.addObject("simple_geo1", "", sideVertT);
 			//roof
-			vboRenderManager.addStaticGeometry2("simple_geo1", contB, height, false, "", GL_QUADS, 1 | LC::mode_Lighting, glm::vec2(1, 1), colorW);
+			std::vector<Vertex> contB2;
+			contB2.push_back(Vertex(glm::vec3(contB[0].x, contB[0].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[1].x, contB[1].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[2].x, contB[2].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[0].x, contB[0].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[2].x, contB[2].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[3].x, contB[3].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			vboRenderManager.addObject("simple_geo1", "", contB2);
 		}
 		{//SIDE BOX GROUND
 			std::vector<glm::vec3> contB;
@@ -215,13 +228,23 @@ namespace LC {
 				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f + height), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 0.0f + height), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 0.0f + height), normal, colorW, glm::vec2()));
 
 			}
 			//data/textures/LC/hatch/h2.png
-			vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			//vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			vboRenderManager.addObject("simple_geo1", "", sideVertT);
 			//roof
-			vboRenderManager.addStaticGeometry2("simple_geo1", contB, height, false, "", GL_QUADS, 1 | LC::mode_Lighting, glm::vec2(1, 1), colorW);
+			std::vector<Vertex> contB2;
+			contB2.push_back(Vertex(glm::vec3(contB[0].x, contB[0].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[1].x, contB[1].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[2].x, contB[2].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[0].x, contB[0].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[2].x, contB[2].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[3].x, contB[3].y, 50), glm::vec3(0,0,1), colorW, glm::vec2()));
+			vboRenderManager.addObject("simple_geo1", "", contB2);
 		}
 		{ // TOP BOX
 			std::vector<glm::vec3> contB;
@@ -240,13 +263,24 @@ namespace LC {
 				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 50.0f), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 50.0f), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 50.0f + height), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 50.0f), normal, colorW, glm::vec2()));
+				sideVertT.push_back(Vertex(glm::vec3(contB[nextN].x, contB[nextN].y, 50.0f + height), normal, colorW, glm::vec2()));
 				sideVertT.push_back(Vertex(glm::vec3(contB[curN].x, contB[curN].y, 50.0f + height), normal, colorW, glm::vec2()));
 
 			}
 			//data/textures/LC/hatch/h2.png
-			vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			//vboRenderManager.addStaticGeometry("simple_geo1", sideVertT, "", GL_QUADS, 1 | LC::mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			vboRenderManager.addObject("simple_geo1", "", sideVertT);
 			//roof
-			vboRenderManager.addStaticGeometry2("simple_geo1", contB, 50+height, false, "", GL_QUADS, 1 | LC::mode_Lighting, glm::vec2(1, 1), colorW);
+
+			std::vector<Vertex> contB2;
+			contB2.push_back(Vertex(glm::vec3(contB[0].x, contB[0].y, 100), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[1].x, contB[1].y, 100), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[2].x, contB[2].y, 100), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[0].x, contB[0].y, 100), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[2].x, contB[2].y, 100), glm::vec3(0,0,1), colorW, glm::vec2()));
+			contB2.push_back(Vertex(glm::vec3(contB[3].x, contB[3].y, 100), glm::vec3(0,0,1), colorW, glm::vec2()));
+			vboRenderManager.addObject("simple_geo1", "", contB2);
 		}
 		/////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////
@@ -474,8 +508,9 @@ namespace LC {
 		glDepthFunc(GL_LEQUAL);
 		glDepthMask(true);
 		// RENDER THINGS
-		vboRenderManager.renderStaticGeometry("simple_geo");
-		vboRenderManager.renderStaticGeometry("simple_geo1");
+		vboRenderManager.renderAll();
+		/*vboRenderManager.renderStaticGeometry("simple_geo");
+		vboRenderManager.renderStaticGeometry("simple_geo1");*/
 
 
 		//glDepthFunc(GL_ALWAYS);
