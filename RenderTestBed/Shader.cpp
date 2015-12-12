@@ -176,3 +176,18 @@ GLuint Shader::compileShader(const string& source, GLuint mode) {
 
 	return shader;
 }
+
+void Shader::cleanShaders() {
+	/*
+	for(int pN=0;pN<programs.size();pN++){
+		glDetachShader(programs[pN],vss[pN]);
+		glDetachShader(programs[pN],fragments[pN]);
+		glDeleteShader(vss[pN]);
+		glDeleteShader(fragments[pN]);
+		glDeleteProgram(programs[pN]);
+	}
+	programs.clear();
+	vss.clear();
+	fragments.clear();
+	*/
+}

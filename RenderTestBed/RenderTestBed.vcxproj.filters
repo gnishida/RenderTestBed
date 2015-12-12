@@ -12,7 +12,9 @@
     <ClCompile Include="misctools\polygon_3D.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_LC_UrbanMain.h" />

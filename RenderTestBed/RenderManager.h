@@ -44,10 +44,6 @@ public:
 	//SketchyRenderingBuffer rb;
 
 	int renderingMode;
-	float depthSensitivity;
-	float normalSensitivity;
-	bool useThreshold;
-	float threshold;
 
 	// SSAO
 	std::vector<QString> fragDataNamesP1;//Multi target fragmebuffer names P1
@@ -89,8 +85,7 @@ public:
 	void renderAllExcept(const QString& object_name);
 	void render(const QString& object_name);
 	//void updateShadowMap(GLWidget3D* glWidget3D, const glm::vec3& light_dir, const glm::mat4& light_mvpMatrix);
-	void resize(int width, int height);
-
+	
 
 private:
 	GLuint loadTexture(const QString& filename);
