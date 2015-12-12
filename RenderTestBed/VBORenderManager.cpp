@@ -234,55 +234,15 @@ namespace LC {
 		uKernelOffsets.resize(uKernelSize*3);
 		qsrand(123456);
 		for (int i = 0; i < uKernelSize; ++i) {
-			QVector3D kernel = QVector3D((float(qrand()) / RAND_MAX)*2.0f - 1.0f, (float(qrand()) / RAND_MAX)*2.0f - 1.0f, (float(qrand()) / RAND_MAX));
-			kernel.normalize();
+			glm::vec3 kernel = glm::normalize(glm::vec3((float(qrand()) / RAND_MAX)*2.0f - 1.0f, (float(qrand()) / RAND_MAX)*2.0f - 1.0f, (float(qrand()) / RAND_MAX)));
 			float scale = float(i) / uKernelSize;
 			kernel *= lerp<float>(0.1f, 1.0f, scale*scale);
-			printf("[%d] %f %f %f\n",i,kernel.x(),kernel.y(),kernel.z());
-			uKernelOffsets[i * 3 + 0] = kernel.x();
-			uKernelOffsets[i * 3 + 1] = kernel.y();
-			uKernelOffsets[i * 3 + 2] = kernel.z();
+			printf("[%d] %f %f %f\n",i,kernel.x,kernel.y,kernel.z);
+			uKernelOffsets[i * 3 + 0] = kernel.x;
+			uKernelOffsets[i * 3 + 1] = kernel.y;
+			uKernelOffsets[i * 3 + 2] = kernel.z;
 		}
 	}//
-
-#if 0
-	void VBORenderManager::renderSecondPass(){
-		/*glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		// reffered
-		glActiveTexture (GL_TEXTURE1);
-		glBindTexture (GL_TEXTURE_2D, fragDataTex[0]);
-		glActiveTexture (GL_TEXTURE2);
-		glBindTexture (GL_TEXTURE_2D, fragDataTex[1]);
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, fragDataTex[2]);
-
-		// noise
-		glActiveTexture(GL_TEXTURE7);
-		glBindTexture(GL_TEXTURE_2D, fragNoiseTex);
-		
-
-		glUniform1i(glGetUniformLocation(program_pass2, ("tex0")), 1);
-		glUniform1i(glGetUniformLocation(program_pass2, ("tex1")), 2);
-		glUniform1i(glGetUniformLocation(program_pass2, ("tex2")), 3);
-		printf("** tex %d %d %d\n", glGetUniformLocation(program_pass2, ("tex0")), glGetUniformLocation(program_pass2, ("tex1")), glGetUniformLocation(program_pass2, ("tex2")));
-		glUniform1i(glGetUniformLocation(program_pass2, "noiseTex"), 7);
-
-		glUniform1i(glGetUniformLocation(program_pass2, ("uKernelSize")), uKernelSize);
-		glUniform3fv(glGetUniformLocation(program_pass2, ("uKernelOffsets")), uKernelOffsets.size(), (const GLfloat*)uKernelOffsets.data());
-		printf("** ukernel %d %d\n", glGetUniformLocation(program_pass2, ("uKernelSize")), glGetUniformLocation(program_pass2, ("uKernelOffsets")));
-
-		glUniform1f(glGetUniformLocation(program_pass2, ("uPower")), uPower);
-		glUniform1f(glGetUniformLocation(program_pass2, ("uRadius")), uRadius);
-
-
-
-
-		glBindVertexArray(secondPassVAO);
-		glDrawArrays(GL_QUADS,0,4);
-		glBindVertexArray(0);*/
-	}
-#endif
 
 	GLuint VBORenderManager::loadTexture(const QString fileName,bool mirrored){
 		GLuint texId;
