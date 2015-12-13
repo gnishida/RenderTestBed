@@ -19,13 +19,13 @@ using namespace std;
 uint Shader::createProgram(const string& vertex_file, const string& fragment_file, const std::vector<QString>& fragDataNamesP1) {
 	std::string source;
 	loadTextFile(vertex_file, source);
-	vertex_shader = compileShader(source, GL_VERTEX_SHADER);
+	GLuint vertex_shader = compileShader(source, GL_VERTEX_SHADER);
 
 	loadTextFile(fragment_file, source);
-	fragment_shader = compileShader(source,GL_FRAGMENT_SHADER);
+	GLuint fragment_shader = compileShader(source,GL_FRAGMENT_SHADER);
 
 	// create program
-	program = glCreateProgram();
+	GLuint program = glCreateProgram();
 	glAttachShader(program, vertex_shader);
 	glAttachShader(program, fragment_shader);
 	if (fragDataNamesP1.size() == 0) {
@@ -53,22 +53,26 @@ uint Shader::createProgram(const string& vertex_file, const string& fragment_fil
 		throw runtime_error(ss.str());
 	}
 
+	programs.push_back(program);
+	vertex_shaders.push_back(vertex_shader);
+	fragment_shaders.push_back(fragment_shader);
+
 	return program;
 }
 
 uint Shader::createProgram(const string& vertex_file, const string& geometry_file, const string& fragment_file) {
 	std::string source;
 	loadTextFile(vertex_file, source);
-	vertex_shader = compileShader(source, GL_VERTEX_SHADER);
+	GLuint vertex_shader = compileShader(source, GL_VERTEX_SHADER);
 
 	loadTextFile(geometry_file, source);
-	geometry_shader = compileShader(source, GL_GEOMETRY_SHADER);
+	GLuint geometry_shader = compileShader(source, GL_GEOMETRY_SHADER);
 
 	loadTextFile(fragment_file, source);
-	fragment_shader = compileShader(source,GL_FRAGMENT_SHADER);
+	GLuint fragment_shader = compileShader(source,GL_FRAGMENT_SHADER);
 
 	// create program
-	program = glCreateProgram();
+	GLuint program = glCreateProgram();
 	glAttachShader(program, vertex_shader);
 	glAttachShader(program, geometry_shader);
 	glAttachShader(program, fragment_shader);
@@ -178,16 +182,15 @@ GLuint Shader::compileShader(const string& source, GLuint mode) {
 }
 
 void Shader::cleanShaders() {
-	/*
 	for(int pN=0;pN<programs.size();pN++){
-		glDetachShader(programs[pN],vss[pN]);
-		glDetachShader(programs[pN],fragments[pN]);
-		glDeleteShader(vss[pN]);
-		glDeleteShader(fragments[pN]);
+		glDetachShader(programs[pN], vertex_shaders[pN]);
+		glDetachShader(programs[pN], fragment_shaders[pN]);
+		glDeleteShader(vertex_shaders[pN]);
+		glDeleteShader(fragment_shaders[pN]);
 		glDeleteProgram(programs[pN]);
 	}
+
 	programs.clear();
-	vss.clear();
-	fragments.clear();
-	*/
+	vertex_shaders.clear();
+	fragment_shaders.clear();
 }

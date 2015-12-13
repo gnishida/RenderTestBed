@@ -299,7 +299,7 @@ namespace LC {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		*/
-		glUniform1i(glGetUniformLocation(vboRenderManager.program_pass2, "tex0"), 0);//tex0: 0
+		glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass2"], "tex0"), 0);//tex0: 0
 	}
 
 	void LCGLWidget3D::resizeGL(int width, int height) {
@@ -342,10 +342,10 @@ namespace LC {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// PASS 1: Render to texture
-		glUseProgram(vboRenderManager.program_pass1);
+		glUseProgram(vboRenderManager.programs["pass1"]);
 		{
-			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass1, "mvpMatrix"), 1, false, &camera.mvpMatrix[0][0]);//mvpMatrixArray);
-			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass1, "mvMatrix"), 1, false, &camera.mvMatrix[0][0]);//mvMatrixArray);
+			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.programs["pass1"], "mvpMatrix"), 1, false, &camera.mvpMatrix[0][0]);//mvpMatrixArray);
+			glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.programs["pass1"], "mvMatrix"), 1, false, &camera.mvMatrix[0][0]);//mvMatrixArray);
 			//glUniformMatrix3fv(glGetUniformLocation(vboRenderManager.program_pass1, "normalMatrix"), 1, false, normMatrixArray);
 		}
 		
@@ -374,7 +374,7 @@ namespace LC {
 		// PASS 2: Create AO
 		int enabledSSAO = urbanMain->ui.ssaoEnabledCheckBox->isChecked() ? 1:0;
 		if (enabledSSAO == 1) {
-
+			
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			qglClearColor(QColor(0xFF, 0xFF, 0xFF));
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -399,52 +399,53 @@ namespace LC {
 			glDisable(GL_DEPTH_TEST);
 			glDepthFunc(GL_ALWAYS);
 
-			glUseProgram(vboRenderManager.program_pass2);
-			glUniform2f(glGetUniformLocation(vboRenderManager.program_pass2, "pixelSize"), 2.0f / this->width(), 2.0f / this->height());
-			//printf("pixelSize loc %d\n", glGetUniformLocation(vboRenderManager.program_pass2, "pixelSize"));
+			glUseProgram(vboRenderManager.programs["pass2"]);
+			glUniform2f(glGetUniformLocation(vboRenderManager.programs["pass2"], "pixelSize"), 2.0f / this->width(), 2.0f / this->height());
+			//printf("pixelSize loc %d\n", glGetUniformLocation(vboRenderManager.programs["pass2"], "pixelSize"));
 
-			glUniform1i(glGetUniformLocation(vboRenderManager.program_pass2, ("tex0")), 1);
+			glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass2"], ("tex0")), 1);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragDataTex[0]);
 
-			glUniform1i(glGetUniformLocation(vboRenderManager.program_pass2, ("tex1")), 2);
+			glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass2"], ("tex1")), 2);
 			glActiveTexture(GL_TEXTURE2);
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragDataTex[1]);
 
-			glUniform1i(glGetUniformLocation(vboRenderManager.program_pass2, ("tex2")), 3);
+			glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass2"], ("tex2")), 3);
 			glActiveTexture(GL_TEXTURE3);
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragDataTex[2]);
 
-			glUniform1i(glGetUniformLocation(vboRenderManager.program_pass2, ("depthTex")), 8);
+			glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass2"], ("depthTex")), 8);
 			glActiveTexture(GL_TEXTURE8);
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragDepthTex);
 
-			glUniform1i(glGetUniformLocation(vboRenderManager.program_pass2, ("noiseTex")), 7);
+			glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass2"], ("noiseTex")), 7);
 			glActiveTexture(GL_TEXTURE7);
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragNoiseTex);
 
 			{
-				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass2, "mvpMatrix"), 1, false, &camera.mvpMatrix[0][0]);//mvpMatrixArray);
-				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.program_pass2, "pMatrix"), 1, false, &camera.pMatrix[0][0]);//pMatrixArray);
+				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.programs["pass2"], "mvpMatrix"), 1, false, &camera.mvpMatrix[0][0]);//mvpMatrixArray);
+				glUniformMatrix4fv(glGetUniformLocation(vboRenderManager.programs["pass2"], "pMatrix"), 1, false, &camera.pMatrix[0][0]);//pMatrixArray);
 			}
 
 
-			glUniform1i(glGetUniformLocation(vboRenderManager.program_pass2, ("uKernelSize")), vboRenderManager.uKernelSize);
-			glUniform3fv(glGetUniformLocation(vboRenderManager.program_pass2, ("uKernelOffsets")), vboRenderManager.uKernelOffsets.size(), (const GLfloat*)vboRenderManager.uKernelOffsets.data());
-			//printf("** ukernel %d %d\n", glGetUniformLocation(vboRenderManager.program_pass2, ("uKernelSize")), glGetUniformLocation(vboRenderManager.program_pass2, ("uKernelOffsets")));
+			glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass2"], ("uKernelSize")), vboRenderManager.uKernelSize);
+			glUniform3fv(glGetUniformLocation(vboRenderManager.programs["pass2"], ("uKernelOffsets")), vboRenderManager.uKernelOffsets.size(), (const GLfloat*)vboRenderManager.uKernelOffsets.data());
+			//printf("** ukernel %d %d\n", glGetUniformLocation(vboRenderManager.programs["pass2"], ("uKernelSize")), glGetUniformLocation(vboRenderManager.program_pass2, ("uKernelOffsets")));
 
-			glUniform1f(glGetUniformLocation(vboRenderManager.program_pass2, ("uPower")), vboRenderManager.uPower);
-			glUniform1f(glGetUniformLocation(vboRenderManager.program_pass2, ("uRadius")), vboRenderManager.uRadius);
+			glUniform1f(glGetUniformLocation(vboRenderManager.programs["pass2"], ("uPower")), vboRenderManager.uPower);
+			glUniform1f(glGetUniformLocation(vboRenderManager.programs["pass2"], ("uRadius")), vboRenderManager.uRadius);
 
 			glBindVertexArray(vboRenderManager.secondPassVAO);
 
 			glDrawArrays(GL_QUADS, 0, 4);
 			glBindVertexArray(0);
 			glDepthFunc(GL_LEQUAL);
+			
 		}
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// PASS 3: Final
@@ -456,31 +457,31 @@ namespace LC {
 		glDisable(GL_DEPTH_TEST);
 		glDepthFunc(GL_ALWAYS);
 
-		glUseProgram(vboRenderManager.program_pass3);
-		glUniform2f(glGetUniformLocation(vboRenderManager.program_pass3, "pixelSize"), 2.0f / this->width(), 2.0f / this->height());
+		glUseProgram(vboRenderManager.programs["pass3"]);
+		glUniform2f(glGetUniformLocation(vboRenderManager.programs["pass3"], "pixelSize"), 2.0f / this->width(), 2.0f / this->height());
 		//printf("pixelSize loc %d\n", glGetUniformLocation(vboRenderManager.program_pass3, "pixelSize"));
 
-		glUniform1i(glGetUniformLocation(vboRenderManager.program_pass3, ("tex0")), 1);//COLOR
+		glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass3"], ("tex0")), 1);//COLOR
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragDataTex[0]);
 
-		glUniform1i(glGetUniformLocation(vboRenderManager.program_pass3, ("tex1")), 2);//NORMAL
+		glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass3"], ("tex1")), 2);//NORMAL
 		glActiveTexture(GL_TEXTURE2);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragDataTex[1]);
 
-		/*glUniform1i(glGetUniformLocation(vboRenderManager.program_pass3, ("tex2")), 3);
+		/*glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass3"], ("tex2")), 3);
 		glActiveTexture(GL_TEXTURE3);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragDataTex[2]);*/
 
-		glUniform1i(glGetUniformLocation(vboRenderManager.program_pass3, ("tex3")), 4);//AO
+		glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass3"], ("tex3")), 4);//AO
 		glActiveTexture(GL_TEXTURE4);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, vboRenderManager.fragAOTex);
 		//printf(">> tex3 loc %d\n", glGetUniformLocation(vboRenderManager.program_pass3, "tex3"));
 
-		glUniform1i(glGetUniformLocation(vboRenderManager.program_pass3, ("enabledSSAO")), enabledSSAO);//AO
+		glUniform1i(glGetUniformLocation(vboRenderManager.programs["pass3"], ("enabledSSAO")), enabledSSAO);//AO
 
 		glBindVertexArray(vboRenderManager.secondPassVAO);
 

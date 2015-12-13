@@ -8,6 +8,7 @@
 //#include "GLUtils.h"
 #include <boost/shared_ptr.hpp>
 #include "Shader.h"
+#include <map>
 
 class GeometryObject {
 public:
@@ -30,11 +31,8 @@ public:
 
 public:
 	Shader shader;
-	//GLuint program;
-	GLuint program_pass1;
-	GLuint program_pass2;
-	GLuint program_pass3;
-	
+	std::map<std::string, GLuint> programs;
+
 	QMap<QString, QMap<GLuint, GeometryObject> > objects;
 	QMap<QString, GLuint> textures;
 
@@ -58,7 +56,7 @@ public:
 	// second pass
 	GLuint secondPassVBO;
 	GLuint secondPassVAO;
-	//void renderSecondPass();
+	
 	// ssao
 	float uRadius;
 	float uPower;

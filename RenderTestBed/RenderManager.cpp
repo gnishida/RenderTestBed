@@ -71,7 +71,8 @@ RenderManager::RenderManager() {
 }
 
 RenderManager::~RenderManager() {
-	//Shader::cleanShaders();
+	shader.cleanShaders();
+
 	//delete
 	glDeleteVertexArrays(1,&secondPassVBO);
 	glDeleteVertexArrays(1,&secondPassVAO);
@@ -93,19 +94,19 @@ void RenderManager::init(const std::string& vertex_file, const std::string& geom
 	fragDataNamesP1.push_back("def_diffuse");
 	fragDataNamesP1.push_back("def_normal");
 	fragDataNamesP1.push_back("def_originPos");
-	program_pass1=shader.createProgram("lc_vert_pass1.glsl", "lc_frag_pass1.glsl" ,fragDataNamesP1);
+	programs["pass1"]=shader.createProgram("lc_vert_pass1.glsl", "lc_frag_pass1.glsl" ,fragDataNamesP1);
 	// PASS 2
 	printf("PASS 2\n");
 	std::vector<QString> fragDataNamesP2;
 	fragDataNamesP2.push_back("def_AO");
-	program_pass2=shader.createProgram("lc_vert_pass2.glsl", "lc_frag_pass2.glsl" , fragDataNamesP2);
+	programs["pass2"]=shader.createProgram("lc_vert_pass2.glsl", "lc_frag_pass2.glsl" , fragDataNamesP2);
 	// PASS 3
 	printf("PASS 3\n");
 	std::vector<QString> fragDataNamesP3;//default
 	fragDataNamesP3.push_back("outputF");
-	program_pass3 = shader.createProgram("lc_vert_pass3.glsl", "lc_frag_pass3.glsl", fragDataNamesP3);
+	programs["pass3"] = shader.createProgram("lc_vert_pass3.glsl", "lc_frag_pass3.glsl", fragDataNamesP3);
 
-	glUseProgram(program_pass1);
+	glUseProgram(programs["pass1"]);
 
 
 	//////////////////////////////////////////////
@@ -316,7 +317,6 @@ void RenderManager::resizeSsaoKernel() {
 	}
 }//
 
-
 /*void RenderManager::addFaces(const std::vector<boost::shared_ptr<glutils::Face> >& faces) {
 	for (int i = 0; i < faces.size(); ++i) {
 		addObject(faces[i]->name.c_str(), faces[i]->texture.c_str(), faces[i]->vertices);
@@ -439,31 +439,31 @@ void RenderManager::render(const QString& object_name) {
 		if (texId > 0) {
 			// テクスチャなら、バインドする
 			glBindTexture(GL_TEXTURE_2D, texId);
-			glUniform1i(glGetUniformLocation(program_pass1, "textureEnabled"), 1);
-			glUniform1i(glGetUniformLocation(program_pass1, "tex0"), 0);
+			glUniform1i(glGetUniformLocation(programs["pass1"], "textureEnabled"), 1);
+			glUniform1i(glGetUniformLocation(programs["pass1"], "tex0"), 0);
 		} else {
-			glUniform1i(glGetUniformLocation(program_pass1, "textureEnabled"), 0);
+			glUniform1i(glGetUniformLocation(programs["pass1"], "textureEnabled"), 0);
 		}
 
 		if (useShadow) {
-			glUniform1i(glGetUniformLocation(program_pass1, "useShadow"), 1);
+			glUniform1i(glGetUniformLocation(programs["pass1"], "useShadow"), 1);
 		} else {
-			glUniform1i(glGetUniformLocation(program_pass1, "useShadow"), 0);
+			glUniform1i(glGetUniformLocation(programs["pass1"], "useShadow"), 0);
 		}
 
 		if (renderingMode == RENDERING_MODE_REGULAR) {
-			glUniform1i(glGetUniformLocation(program_pass1, "renderingMode"), 1);
+			glUniform1i(glGetUniformLocation(programs["pass1"], "renderingMode"), 1);
 		} else if (renderingMode == RENDERING_MODE_WIREFRAME) {
-			glUniform1i(glGetUniformLocation(program_pass1, "renderingMode"), 2);
+			glUniform1i(glGetUniformLocation(programs["pass1"], "renderingMode"), 2);
 		} else {
 			if (renderingMode == RENDERING_MODE_LINE) {
-				glUniform1i(glGetUniformLocation(program_pass1, "renderingMode"), 3);
+				glUniform1i(glGetUniformLocation(programs["pass1"], "renderingMode"), 3);
 			} else {
-				glUniform1i(glGetUniformLocation(program_pass1, "renderingMode"), 4);
+				glUniform1i(glGetUniformLocation(programs["pass1"], "renderingMode"), 4);
 			}
 		}
 
-		glUniform1i (glGetUniformLocation (program_pass1, "mode"), 513);
+		glUniform1i (glGetUniformLocation (programs["pass1"], "mode"), 513);
 
 
 		// 描画

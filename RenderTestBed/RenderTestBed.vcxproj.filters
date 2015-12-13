@@ -52,16 +52,16 @@
     <None Include="lc_frag_pass1.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="lc_frag_pass2.glsl">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="lc_vert_pass1.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="lc_vert_pass2.glsl">
+    <None Include="lc_frag_pass2.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="lc_frag_pass3.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lc_vert_pass2.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="lc_vert_pass3.glsl">

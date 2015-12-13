@@ -17,9 +17,8 @@ private:
 	GLuint compileShader(const std::string& source, GLuint mode);
 
 private:
-	GLuint program;
-	GLuint vertex_shader;
-	GLuint geometry_shader;
-	GLuint fragment_shader;
+	std::vector<GLuint> programs;
+	std::vector<GLuint> vertex_shaders;
+	std::vector<GLuint> fragment_shaders;
 };
 
